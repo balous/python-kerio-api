@@ -1,0 +1,4 @@
+*.pyc
+dist
+build
+kerio_api.egg-info
