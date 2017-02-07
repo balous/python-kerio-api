@@ -14,3 +14,9 @@ class Generic(ChainableMethod, object):
     def __call__(self, **params):
         method_name = '.'.join(self.names)
         return self.session.json_method(method_name, params)
+
+class Upload(Generic):
+    def __call__(self, path):
+
+        with open(path, 'r') as file:
+            return self.session.upload_file(file.read())

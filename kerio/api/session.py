@@ -52,6 +52,7 @@ class Session(object):
         body = json.loads(resp.read())
 
         if self.debug:
+            print('RESPONSE:')
             pprint(body)
 
         if 'error' in body:
@@ -71,6 +72,7 @@ class Session(object):
             body['token'] = self.token
 
         if self.debug:
+            print('REQUEST:')
             pprint(body)
 
         headers = self.headers()
@@ -85,3 +87,39 @@ class Session(object):
         resp = self.session.getresponse()
 
         return self.process_json_response(resp)
+
+    def upload_file(self, data):
+
+        boundary = '+----------ThIs_Is_tHe_bouNdaRY_$'
+
+        headers = self.headers()
+        headers['Accept'] = '*/*'
+        headers['Content-Type'] = 'multipart/form-data; boundary=%s' % boundary
+
+        lines = [
+            '--' + boundary,
+            'Content-Disposition: form-data; name="newFile.bin"; filename="newFile.bin"',
+            'Content-Type: application/octet-stream',
+            '',
+            data,
+            '--' + boundary + '--',
+            '',
+        ]
+
+        body = '\r\n'.join(lines)
+
+        url = self.url.path
+        if url[:-1] != '/':
+            url += '/'
+        url += 'upload'
+
+        self.session.request(
+            'POST',
+            url,
+            body,
+            headers
+        )
+        resp = self.session.getresponse()
+
+        return self.process_json_response(resp)
+
