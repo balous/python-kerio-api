@@ -11,7 +11,7 @@ client = kerio.api.Client(debug = True, insecure = True, url = 'https://localhos
 #client.Init.finish()
 
 client.Session.login(userName = 'Admin', password = 'password', application = {'name': "", 'vendor': "", 'version': ""})
-client.upload('./test.py')
+client.upload('./test-operator.py')
 client.Session.logout()
 
 try:

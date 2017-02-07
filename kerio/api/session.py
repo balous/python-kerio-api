@@ -42,21 +42,22 @@ class Session(object):
 
     def process_json_response(self, resp):
 
-        if resp.status != 200:
-            raise kerio.api.Error(resp)
-
-        for h in resp.getheaders():
-            if h[0] == 'set-cookie':
-                self.cookie = h[1]
-
         body = json.loads(resp.read())
 
         if self.debug:
             print('RESPONSE:')
             pprint(body)
 
+        error = None
         if 'error' in body:
-            raise kerio.api.Error(body)
+            error = body['error']
+
+        if (resp.status != 200) or (error != None):
+            raise kerio.api.Error(resp.status, error['message'])
+
+        for h in resp.getheaders():
+            if h[0] == 'set-cookie':
+                self.cookie = h[1]
 
         return body
 
