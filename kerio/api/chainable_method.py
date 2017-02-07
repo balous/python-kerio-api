@@ -23,6 +23,9 @@ class ChainableMethod(object):
             # instantiate method's class
             class_name = names[-1].capitalize()
 
+#            pprint(module)
+#            pprint(class_name)
+
             method = getattr(module, class_name)(**params)
 
         except (ImportError, AttributeError) as e:
