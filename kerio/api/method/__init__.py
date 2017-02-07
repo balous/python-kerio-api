@@ -20,3 +20,8 @@ class Upload(Generic):
 
         with open(path, 'r') as file:
             return self.session.upload_file(file.read())
+
+class Download(Generic):
+    def __call__(self, path):
+
+        return self.session.download_file(path)

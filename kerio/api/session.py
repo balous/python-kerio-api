@@ -124,5 +124,22 @@ class Session(object):
 
         return self.process_json_response(resp)
 
-    def download_file():
-        pass
+    def download_file(self, path, chunk_size = 10240):
+        headers = self.headers()
+        headers['Accept'] = '*/*'
+
+        self.session.request(
+            'GET',
+            path,
+            "",
+            headers
+        )
+        resp = self.session.getresponse()
+
+        if resp.status != 200:
+            raise kerio.api.Error(resp.status, None)
+
+        data = resp.read(chunk_size)
+        while len(data) != 0:
+            yield data
+            data = resp.read(chunk_size)
