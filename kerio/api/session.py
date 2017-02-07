@@ -59,7 +59,7 @@ class Session(object):
             if h[0] == 'set-cookie':
                 self.cookie = h[1]
 
-        return body
+        return body['result']
 
     def json_method(self, name, params):
 
@@ -124,3 +124,5 @@ class Session(object):
 
         return self.process_json_response(resp)
 
+    def download_file():
+        pass
