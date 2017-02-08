@@ -4,7 +4,7 @@ from kerio.api.chainable_method import ChainableMethod
 from kerio.api.session import Session
 
 class Error(Exception):
-    def __init__(self, code, error):
+    def __init__(self, code, error = None):
         self.code  = code
         self.error = error
 

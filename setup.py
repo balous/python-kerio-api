@@ -13,7 +13,7 @@ class MambaTest(TestCommand):
     def run_tests(self):
         import sys
         import mamba.cli
-        sys.argv = ['mamba']
+        sys.argv = ['mamba', '--format', 'documentation']
         mamba.cli.main()
 
 setup(
@@ -25,6 +25,8 @@ setup(
         tests_require = [
             'mamba',
             'expects',
+            'doublex',
+            'doublex_expects',
         ],
         cmdclass = {'test': MambaTest},
         zip_safe = False,
