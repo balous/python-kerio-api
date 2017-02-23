@@ -1,7 +1,7 @@
 from expects import *
 import kerio.api
 
-with description('kerio.api.Error'):
+with description(kerio.api.Error):
     with context('both params'):
         with it('formats message'):
             e = kerio.api.Error('501', 'it sucks')
