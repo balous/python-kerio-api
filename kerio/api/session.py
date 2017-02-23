@@ -7,18 +7,18 @@ import ssl
 import kerio.api
 
 class Session(object):
-    def __init__(self, **params):
+    def __init__(self, url, debug = False, insecure = False):
 
-        self.url = urlparse.urlparse(params['url'])
+        self.url = urlparse.urlparse(url)
 
-        self.debug = params['debug']
+        self.debug = debug
 
         self.token = None
         self.cookie = None
 
         context = None
 
-        if params['insecure']:
+        if insecure:
             context = ssl._create_unverified_context()
 
         self.session = httplib.HTTPSConnection(
