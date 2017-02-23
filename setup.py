@@ -27,6 +27,8 @@ setup(
             'expects',
             'doublex',
             'doublex_expects',
+            'HTTPretty',
+            'mock',
         ],
         cmdclass = {'test': MambaTest},
         zip_safe = False,
