@@ -1,7 +1,7 @@
 import sys
 import httpretty
 from expects import *
-from mock import MagicMock, patch
+from mock import MagicMock, patch, mock_open
 import kerio.api
 from pprint import pprint
 import json
@@ -151,14 +151,41 @@ with description(kerio.api.Client):
 
                 expect(c.request).to(raise_error(kerio.api.Error, 'Http code: 200, json-rpc message: :-('))
 
-#    with description('upload'):
-#        with it('uploads file'):
-#
-#            file_mock = MagicMock(spec = file)
-#            file_mock.__exit__ = MagicMock(return_value=False)
-#
-#            with patch('kerio.api.method.open') as file:
-#
-#                c = kerio.api.Client(url = 'https://1.1.1.1/api')
-#
-#                c.upload('./file')
+    with description('upload'):
+        with it('uploads file'):
+
+            result = ':-)'
+            httpretty.register_uri(
+                httpretty.POST,
+                'https://1.1.1.1/api/upload',
+                body = json.dumps(
+                    {
+                        "result": result,
+                        "jsonrpc": "2.0",
+                        "id": 1,
+                    }
+                ),
+            )
+
+            with patch('kerio.api.method.open', mock_open(read_data = 'my data')) as mo:
+
+                c = kerio.api.Client(url = 'https://1.1.1.1/api')
+
+                expect(c.upload('./file')).to(equal(result))
+
+                expect(httpretty.last_request().body).to(match(r'my data'))
+
+    with description('download'):
+        with it('downloads file'):
+
+            data = 'my data'
+            httpretty.register_uri(
+                httpretty.GET,
+                'https://1.1.1.1/download/file',
+                body = data,
+            )
+
+            c = kerio.api.Client(url = 'https://1.1.1.1/api')
+            result = c.download('/download/file')
+
+            expect(result.next()).to(equal(data))
