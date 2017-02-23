@@ -51,6 +51,6 @@ client.Session.logout()
 
 try:
     client.Session.logout()
-except kerio.api.Error, e:
+except kerio.api.Error as e:
     pprint(e)
 
