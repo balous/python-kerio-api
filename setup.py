@@ -18,7 +18,7 @@ class MambaTest(TestCommand):
 
 setup(
         name = 'kerio-api',
-        version = '0.1',
+        version = '0.2',
         packages = ['kerio'],
         install_requires = [
         ],
